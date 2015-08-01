@@ -1,0 +1,5 @@
+.gitignore
+README.Rmd
+README.md
+CONDUCT.md
+vignettes

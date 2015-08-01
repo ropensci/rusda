@@ -1,0 +1,8 @@
+exportPattern("^[[:alpha:]]+")
+
+import(XML)
+import(httr)
+import(plyr)
+import(foreach)
+import(stringr)
+import(testthat)
