@@ -10,7 +10,7 @@ From CRAN
 ```r
 install.packages("rusda")
 ```
-Or from GitHub for the development version
+or from rOpenSci
 ```r
 install.packages("devtools")
 library("devtools")
@@ -97,3 +97,6 @@ So within the genus Polyporus the mean number of host associations is:
 ## > mean(unlist(lapply(polyporus_ass[[2]], length)))
 ## [1] 23.25926
 ```
+
+
+[![ropensci_footer](http://ropensci.org/public_images/github_footer.png)](http://ropensci.org)

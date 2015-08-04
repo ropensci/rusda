@@ -10,7 +10,7 @@ From CRAN
 ```r
 install.packages("rusda")
 ```
-Or from GitHub for the development version
+or from rOpenSci
 ```r
 install.packages("devtools")
 library("devtools")
