@@ -26,5 +26,4 @@ Farr, D.F., & Rossman, A.Y. Fungal Databases, Systematic Mycology and Microbiolo
  \url{http://www.usda.gov/wps/portal/usda/usdahome}
 
 }
-
 \keyword{ package }

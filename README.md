@@ -13,8 +13,9 @@ install.packages("rusda")
 Or from GitHub for the development version
 ```r
 install.packages("devtools")
-devtools::install_github("franzkrah/rusda")
 library("devtools")
+
+install_github("ropensci/rusda")
 ```
 And load rusda
 ```r
