@@ -1,5 +1,8 @@
 rusda
 =======
+
+[![Build Status](https://api.travis-ci.org/ropensci/rusda.png)](https://travis-ci.org/ropensci/rusda)
+
 ## Interface to USDA databases
 
 ## Description

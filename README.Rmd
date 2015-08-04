@@ -1,5 +1,8 @@
 rusda
 =======
+
+[![Build Status](https://api.travis-ci.org/ropensci/rusda.png)](https://travis-ci.org/ropensci/rusda)
+
 ## Interface to USDA databases
 
 ## Description
@@ -22,13 +25,13 @@ And load rusda
 library("rusda")
 ```
 ## Example 1
-In the following case we want to search for the host of a fungus (Rosellinia ligniaria) and the fungal associations for a give host (Fagus sylvatica). From our expert knowledge we already know that these two species are associated. Let's see if the Fungus-Hosts Distributions database from the USDA confirms this hypothesis. 
+In the following case we want to search for the host of a fungus (Rosellinia ligniaria) and the fungal associations for a give host (Fagus sylvatica). From our expert knowledge we already know that these two species are associated. Let's see if the Fungus-Hosts Distributions database from the USDA confirms this hypothesis.
 We first specify the input species vectors. In this case they they are only one element long (they are allowed to be longer, too).
 ```r
 host <- c("Fagus sylvatica")
 fungus <- c("Rosellinia aquila")
 ```
-Then we search for the associations and look at the output. Since we are interested in "real" species names we choose the 'clean' output. We want the full possible list of associations so we choose 'synonyms=TRUE'. 
+Then we search for the associations and look at the output. Since we are interested in "real" species names we choose the 'clean' output. We want the full possible list of associations so we choose 'synonyms=TRUE'.
 ```r
 fungi <- associations(host, database="both", clean=TRUE, syn_include=TRUE, spec_type="plant", process=TRUE)
 hosts <- associations(fungus, database="both", clean=TRUE, syn_include=TRUE, spec_type="fungus",process=TRUE)
@@ -39,12 +42,12 @@ head(hosts$association$`Rosellinia aquila`)
 
 ```
 ## > head(fungi$association$`Fagus sylvatica`)
-## [1] "Polyporus squamosus"       "Absidia glauca"            "Acia stenodon"            
+## [1] "Polyporus squamosus"       "Absidia glauca"            "Acia stenodon"
 ## [4] "Acrogenospora megalospora" "Actinocladium rhodosporum" "Actinonema fagicola"
 
 ## > head(hosts$association$`Rosellinia aquila`)
-## [1] "Acer pseudoplatanus" "Acer rubrum"         "Acer sp."            "Alnus incana"       
-## [5] "Alnus rubra"         "Asclepias sp." 
+## [1] "Acer pseudoplatanus" "Acer rubrum"         "Acer sp."            "Alnus incana"
+## [5] "Alnus rubra"         "Asclepias sp."
 ```
 
 Now we want to check if our initial knowledge is correct:
