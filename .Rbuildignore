@@ -5,3 +5,5 @@ CONDUCT.md
 vignettes
 .travis.yml
 
+^.*\.Rproj$
+^\.Rproj\.user$
