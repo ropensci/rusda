@@ -3,3 +3,7 @@ README.Rmd
 README.md
 CONDUCT.md
 vignettes
+.travis.yml
+
+^.*\.Rproj$
+^\.Rproj\.user$
