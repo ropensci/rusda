@@ -4,6 +4,7 @@
 
 clean_step <- function(x, syns, taxa, spec_type, synonyms_incl)
 {
+  if(spec_type == "plant" & is.null(x)) { x <- "nodata" }
   if(spec_type == "plant" & x[[1]] == "nodata" & length(x) == 1) { x }
   else{
   regex <- c(":\\s*-")
