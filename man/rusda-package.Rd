@@ -10,7 +10,7 @@ Interface to USDA Databases
 \tabular{ll}{
 Package: \tab rusda\cr
 Type: \tab Package\cr
-Version: \tab 1.0.5\cr
+Version: \tab 1.0.6\cr
 Date: \tab 2015-08-01\cr
 }
 

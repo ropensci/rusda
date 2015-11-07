@@ -16,12 +16,11 @@
 #' 
 #' @author Franz-Sebastian Krah
 #' 
-#' @examples \dontrun{
+#' @examples
 #' spec <- c("Polyporus badius")
 #' lit <- literature(spec, process=TRUE, spec_type="fungus")
 #' lit
-#' }
-#' 
+
 literature <- function(spec, spec_type = c("plant", "fungus"), process = TRUE)
 {
   expect_match(spec_type, ("fungus|plant"))

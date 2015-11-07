@@ -29,7 +29,7 @@
 #' 
 #' @author Franz-Sebastian Krah
 #' 
-#' @examples \dontrun{
+#' @examples
 #' spec <- c("Fagus sylvatica")
 #' pathogens <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
 #' spec_type="plant", process=TRUE)
@@ -38,7 +38,6 @@
 #' spec_type="fungus", process=TRUE)
 #' is.element("Rosellinia ligniaria", pathogens$association[[1]])
 #' is.element("Fagus sylvatica", hosts$association[[1]])
-#' }
 
 
 associations <- function(spec, database = c("FH", "SP", "both"), 

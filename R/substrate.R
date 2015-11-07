@@ -12,12 +12,11 @@
 #' 
 #' @author Franz-Sebastian Krah
 #' 
-#' @examples \dontrun{
+#' @examples
 #' polyporus <- c("Polyporus_rhizophilus", "Polyporus_squamosus",
 #'  "Polyporus_squamulosus", "Polyporus_varius")
 #' subs.poly <- substrate(polyporus, process=TRUE)
 #' subs.poly
-#' }
 
 substrate <- function(spec, process = TRUE)
 {

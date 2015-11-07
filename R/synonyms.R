@@ -12,12 +12,11 @@
 #' 
 #' @author Franz-Sebastian Krah
 #' 
-#' @examples \dontrun{
+#' @examples
 #' spec <- c("Solanum tuberosum")
 #' synonyms(spec, spec_type="plant", process=TRUE, clean=TRUE)
 #' spec <- c("Phytophthora infestans", "Polyporus badius")
 #' synonyms(spec, spec_type="fungus", process=TRUE, clean=TRUE)
-#' }
 
 synonyms <- function(spec, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
 {
