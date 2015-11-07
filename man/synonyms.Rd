@@ -24,12 +24,10 @@ an object of class \code{list} containing synonyms for \code{spec}
 Searches and downloads synonym data from SMML Nomenclature database
 }
 \examples{
-\dontrun{
 spec <- c("Solanum tuberosum")
 synonyms(spec, spec_type="plant", process=TRUE, clean=TRUE)
 spec <- c("Phytophthora infestans", "Polyporus badius")
 synonyms(spec, spec_type="fungus", process=TRUE, clean=TRUE)
-}
 }
 \author{
 Franz-Sebastian Krah

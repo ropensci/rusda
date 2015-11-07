@@ -22,12 +22,10 @@ Don't be disappointed. Not much data there.
 But depends on the study group, so give it try.
 }
 \examples{
-\dontrun{
 polyporus <- c("Polyporus_rhizophilus", "Polyporus_squamosus",
  "Polyporus_squamulosus", "Polyporus_varius")
 subs.poly <- substrate(polyporus, process=TRUE)
 subs.poly
-}
 }
 \author{
 Franz-Sebastian Krah
