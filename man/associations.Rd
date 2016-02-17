@@ -31,7 +31,7 @@ vector of mode \code{list} with synonyms for \code{spec}. Notice: This is not a
 complete list of synonym data in the database. This is the list of synonyms that contain data for
 the input \code{spec}. For a complete synonyms list check \code{rusda::synonyms}.
 
-Associations is a vector of mode \code{list} of associations for \code{spec}
+Associations is a vector of mode \code{list} of associations() for \code{spec}
 }
 \description{
 Searches and downloads associations from SMML Fungus-Hosts Distributions and Specimens database
