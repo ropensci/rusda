@@ -4,16 +4,16 @@
 \alias{associations}
 \title{Downloads associations for input species from SMML Fungus-Host DB}
 \usage{
-associations(spec, database = c("FH", "SP", "both"), spec_type = c("plant",
+associations(x, database = c("FH", "SP", "both"), spec_type = c("plant",
   "fungus"), clean = TRUE, syn_include = TRUE, process = TRUE)
 }
 \arguments{
-\item{spec}{a vector of class \code{character} containing fungal or plant species names}
+\item{x}{a vector of class \code{character} containing fungal or plant species names or a genus name (see Details)}
 
 \item{database}{a character string specifying the databases that should be queried. Valid are
 \code{"FH"} (Fungus-Host Distributions), \code{"SP"} (Specimens) or \code{"both"} databases}
 
-\item{spec_type}{a character string specifying the type of \code{spec}.
+\item{spec_type}{a character string specifying the type of \code{x}.
 Can be either \code{"plant"} or \code{"fungus"}}
 
 \item{clean}{logical, if \code{TRUE} a cleaning step is run of the resulting associations list}
@@ -27,11 +27,11 @@ complete synonyms list check \code{rusda::synonyms}}
 an object of class \code{list}.
 
 First is synonyms, second is associations. Synonmys is a
-vector of mode \code{list} with synonyms for \code{spec}. Notice: This is not a
+vector of mode \code{list} with synonyms for \code{x}. Notice: This is not a
 complete list of synonym data in the database. This is the list of synonyms that contain data for
-the input \code{spec}. For a complete synonyms list check \code{rusda::synonyms}.
+the input \code{x}. For a complete synonyms list check \code{rusda::synonyms} or (if needed) for fungi R package rmycobank.
 
-Associations is a vector of mode \code{list} of associations() for \code{spec}
+Associations is a vector of mode \code{list} of associations for \code{x}
 }
 \description{
 Searches and downloads associations from SMML Fungus-Hosts Distributions and Specimens database
@@ -42,8 +42,11 @@ The Fungus-Hosts distributions database 'FH' comprises data compiled from Litera
 the uncleaned output all kinds of unspecified substrates are documented like "submerged wood".
 Cleanded data displayes Linnean names only and species names with either "subsp.","f. sp." "f.",
 "var.". The Specimens database comprises entries from field collections.
+
+If genera names are supplied, then species are derived from the NCBI taxonomy.
 }
 \examples{
+## Example for species name(s) as input
 spec <- c("Fagus sylvatica")
 pathogens <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
 spec_type="plant", process=TRUE)
@@ -52,6 +55,13 @@ hosts <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
 spec_type="fungus", process=TRUE)
 is.element("Rosellinia ligniaria", pathogens$association[[1]])
 is.element("Fagus sylvatica", hosts$association[[1]])
+
+## Example for genus/genera name(s) as input
+gen <- c("Zehneria")
+# or
+gen <- c("Zehneria", "Momordica")
+hosts <- associations(gen, database="both", clean=TRUE, syn_include=TRUE,
+spec_type="plant", process=TRUE)
 }
 \author{
 Franz-Sebastian Krah

@@ -56,7 +56,7 @@ clean_step <- function(x, syns, taxa, spec_type, synonyms_incl)
              "paper\\sChina", "paper\\s[A-Z][a-z]*","wall\\spod", "rotten", "soil\\-",
              "\\s-","nodata", ":", "unknown\\s", "root\\s", "wood\\s", " f.\\ssp.", "BPI",
              "\\(White\\sspongy", "England", "Germany", "Finlland", "Ukraine", "United\\sStates",
-             "Canada", "China", "Denmark" )
+             "Canada", "China", "Denmark", "hardwood", "conifer","deciduous", "conifer" )
   del <- paste(regex, collapse="|")
   x <- gsub(del, "", x)
   
