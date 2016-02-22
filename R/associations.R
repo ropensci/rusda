@@ -36,8 +36,8 @@
 #' spec <- c("Fagus sylvatica")
 #' pathogens <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
 #' spec_type="plant", process=TRUE)
-#' spec <- c("Rosellinia ligniaria")
-#' hosts <- associations(spec, database="both", clean=TRUE, syn_include=TRUE, 
+#' x <- c("Rosellinia ligniaria")
+#' hosts <- associations(x, database="both", clean=TRUE, syn_include=TRUE, 
 #' spec_type="fungus", process=TRUE)
 #' is.element("Rosellinia ligniaria", pathogens$association[[1]])
 #' is.element("Fagus sylvatica", hosts$association[[1]])
@@ -55,10 +55,16 @@ associations <- function(x, database = c("FH", "SP", "both"),
   clean = TRUE, syn_include = TRUE, process = TRUE)
 {
   ## If a genus is supplied
-  if(any(lapply(x, length)==1)){
-    x <- lapply(x, ncbiSpecies)
+  words <- vapply(strsplit(x, "\\W+"), length, integer(1))
+  if (any(words)==1 & (sum(words) != length(x))) 
+  {stop(paste(" check if you specified only genus names or only species names \n",
+      "AFAICS you provided:  \n", sum(words==1), "  genus name(s)  \n", sum(words==2), "  species name(s) ", sep=""))}
+  if(any(words)==1 & sum(words) == length(x)){
+    warning(" make sure you only provided genus names ")
+    x <- lapply(x, ncbiSpecies, clean = TRUE, sub = FALSE)
     x <- unlist(x)
   }
+  # tests
   if(length(grep("\\sx\\s", x)) > 0) 
     stop(" no hybrids allowed as input ")
   expect_match(spec_type, ("fungus|plant"))
@@ -178,9 +184,11 @@ associations <- function(x, database = c("FH", "SP", "both"),
   ## VI. CLEAN    ##
   ##################
   ## do not conduct clean step if wanted
-  if(clean == TRUE){
+  if(clean == TRUE)
+  {
     if(process == TRUE) { message("... cleaning step ...")}
-    res <- lapply(res, clean_step, taxa = taxa, syns = syns, spec_type = spec_type, synonyms_incl = TRUE)
+    res <- lapply(res, clean_step, taxa = taxa, 
+      syns = syns, spec_type = spec_type, synonyms_incl = TRUE)
   }
   res <- lapply(res, unique)
   names(res) <- taxa

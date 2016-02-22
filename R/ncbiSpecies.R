@@ -2,7 +2,7 @@
 ##      This code is part of the rusda package       ##
 ##     F.-S. Krah 2016 (last update: 2016-02-20)     ##
 
-ncbiSpecies <- function(sciname, clean = TRUE){
+ncbiSpecies <- function(sciname, clean, sub){
   require("taxize")
   uid <- get_uid(sciname, check = TRUE)[[1]]
   url <- paste("http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=",uid, sep="")
@@ -16,6 +16,9 @@ ncbiSpecies <- function(sciname, clean = TRUE){
     if(length(grep(nowant, sp))>0)
     {sp <- sp[-grep(nowant, sp)]}
   }
-  sp <- sp[vapply(strsplit(sp, "\\W+"), length, integer(1))==2]
+  if(!sub == TRUE)
+  {
+    sp <- sp[vapply(strsplit(sp, "\\W+"), length, integer(1))==2]
+  }
   return(sp)
 }
