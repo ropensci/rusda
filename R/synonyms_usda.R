@@ -1,29 +1,43 @@
 #' Downloads synonym data from SMML Nomenclature DB
 #' 
 #' Searches and downloads synonym data from SMML Nomenclature database
-#' 
-#' @param spec a vector of class \code{character} containing fungal or plant species names
-#' @param spec_type a character string specifying the type of \code{spec}. 
+#' @param x a vector of class \code{character} containing fungal or plant species or genus names
+#' @param spec_type a character string specifying the type of \code{x}. 
 #' Can be either \code{"plant"} or \code{"fungus"}
 #' @param clean logical, if \code{TRUE} a cleaning step is run of the resulting associations list
 #' @param process logical, if \code{TRUE} downloading and extraction process is displayed
 #' 
-#' @return an object of class \code{list} containing synonyms for \code{spec}
+#' @return an object of class \code{list} containing synonyms for \code{x}
 #' 
 #' @author Franz-Sebastian Krah
 #' 
 #' @examples
-#' spec <- c("Solanum tuberosum")
-#' synonyms(spec, spec_type="plant", process=TRUE, clean=TRUE)
-#' spec <- c("Phytophthora infestans", "Polyporus badius")
-#' synonyms(spec, spec_type="fungus", process=TRUE, clean=TRUE)
+#' x <- "Solanum tuberosum"
+#' synonyms_usda(x, spec_type = "plant", process = TRUE, clean = TRUE)
+#' x <- c("Phytophthora infestans", "Polyporus badius")
+#' synonyms_usda(x, spec_type = "fungus", process = TRUE, clean = TRUE)
 
-synonyms <- function(spec, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
+synonyms_usda <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
 {
+  if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
+  if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
   expect_match(spec_type, ("fungus|plant"))
-  if(length(grep("\\sx\\s", spec)) > 0) { stop(" no hybrids allowed as input") }
-  if(length(spec_type) == 2) stop(" 'spec_type' not specified. Please choose one of 'plant', 'fungus'")
-  ifelse(length(grep(" ", spec)) > 0,tax <- strsplit(spec, " "), tax <- strsplit(spec, "_"))
+  if(length(grep("\\sx\\s", x)) > 0) { stop(" no hybrids allowed as input") }
+  
+  # if underscore remove it
+  if(length(grep("_", x)) > 0) {x <- gsub("_", " ", x)}
+  
+  ## If a genus is supplied
+  words <- vapply(strsplit(x, "\\W+"), length, integer(1))
+  if (any(words == 1) & any(words == 2)) 
+  {stop(paste(" check if you specified ONLY genus names or ONLY species names \n",
+    "AFAICS you provided:  \n", sum(words==1), "  genus name(s)  \n", sum(words==2), "  species name(s) ", sep=""))}
+  if(all(words == 1)){
+    x <- lapply(x, ncbiSpecies, clean = TRUE, sub = FALSE)
+    x <- unlist(x)
+  }
+
+  if(length(grep(" ", x)) >=0) {tax <- strsplit(x, " ")}
   i <- NULL
   
   ## I. PARSE DATA    ##

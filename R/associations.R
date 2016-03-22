@@ -2,7 +2,6 @@
 #' 
 #' Searches and downloads associations from SMML Fungus-Hosts Distributions and Specimens database
 #' for fungus or plant species input vector
-#' 
 #' @param x a vector of class \code{character} containing fungal or plant species names or a genus name (see Details)
 #' @param database a character string specifying the databases that should be queried. Valid are
 #' \code{"FH"} (Fungus-Host Distributions), \code{"SP"} (Specimens) or \code{"both"} databases
@@ -33,34 +32,39 @@
 #' 
 #' @examples
 #' ## Example for species name(s) as input
-#' spec <- c("Fagus sylvatica")
-#' pathogens <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
-#' spec_type="plant", process=TRUE)
-#' x <- c("Rosellinia ligniaria")
-#' hosts <- associations(x, database="both", clean=TRUE, syn_include=TRUE, 
-#' spec_type="fungus", process=TRUE)
+#' x <- "Fagus sylvatica"
+#' pathogens <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
+#' spec_type = "plant", process = TRUE)
+#' x <- "Rosellinia ligniaria"
+#' hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE, 
+#' spec_type = "fungus", process = TRUE)
 #' is.element("Rosellinia ligniaria", pathogens$association[[1]])
 #' is.element("Fagus sylvatica", hosts$association[[1]])
-#' 
+#' @examples
 #' ## Example for genus/genera name(s) as input
-#' gen <- c("Zehneria") 
+#' x <- "Zehneria"
 #' # or
-#' gen <- c("Zehneria", "Momordica")
-#' hosts <- associations(gen, database="both", clean=TRUE, syn_include=TRUE, 
-#' spec_type="plant", process=TRUE)
-
+#' x <- c("Zehneria", "Momordica")
+#' hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE, 
+#' spec_type = "plant", process = TRUE)
 
 associations <- function(x, database = c("FH", "SP", "both"), 
-  spec_type = c("plant", "fungus"), 
-  clean = TRUE, syn_include = TRUE, process = TRUE)
+  spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, process = TRUE)
 {
+  if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
+  if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
+  expect_match(spec_type, ("fungus|plant"))
+  expect_match(database, ("FH|SP|both"))
+  
+  # if underscore remove it
+  if(length(grep("_", x)) > 0) {x <- gsub("_", " ", x)}
+  
   ## If a genus is supplied
   words <- vapply(strsplit(x, "\\W+"), length, integer(1))
-  if (any(words)==1 & (sum(words) != length(x))) 
-  {stop(paste(" check if you specified only genus names or only species names \n",
+  if (any(words == 1) & any(words == 2)) 
+  {stop(paste(" check if you specified ONLY genus names or ONLY species names \n",
       "AFAICS you provided:  \n", sum(words==1), "  genus name(s)  \n", sum(words==2), "  species name(s) ", sep=""))}
-  if(any(words)==1 & sum(words) == length(x)){
-    warning(" make sure you only provided genus names ")
+  if(all(words == 1)){
     x <- lapply(x, ncbiSpecies, clean = TRUE, sub = FALSE)
     x <- unlist(x)
   }
@@ -74,9 +78,7 @@ associations <- function(x, database = c("FH", "SP", "both"),
   if(length(spec_type) == 2) 
     stop(" 'spec_type' not specified. Please choose one of 'plant', 'fungus'")
   
-  ifelse(length(grep(" ", x)) > 0, 
-    tax <- strsplit(x, " "), 
-    tax <- strsplit(x, "_"))
+  if(length(grep(" ", x)) >=0) {tax <- strsplit(x, " ")}
   
   ## I. PARSE DATA    ##
   ######################

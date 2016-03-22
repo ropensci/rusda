@@ -1,32 +1,30 @@
-##                    literature                      ##
-##      This code is part of the rusda package        ##
-##     F.-S. Krah 2014 (last update: 2015-07-14)      ## 
-
 #' Downloads literature from SMML Literature DB
 #' 
 #' Searches and downloads literature entries from the SMML Literature database
 #' 
-#' @param spec a vector of class \code{character} containing fungal or plant species names
+#' @param x a vector of class \code{character} containing fungal or plant species names
 #' @param spec_type a character string specifying the type of \code{spec}. Can be either 
 #' \code{"plant"} or \code{"fungus"}
 #' @param process logical, if \code{TRUE} downloading and extraction process is displayed
 #' 
 #' an object of class \code{list} 
-#' @return a vector of mode \code{list} with literature entries for \code{spec}
+#' @return a vector of mode \code{list} with literature entries for \code{x}
 #' 
 #' @author Franz-Sebastian Krah
 #' 
 #' @examples
-#' spec <- c("Polyporus badius")
-#' lit <- literature(spec, process=TRUE, spec_type="fungus")
+#' x <- "Polyporus badius"
+#' lit <- literature(x, process = TRUE, spec_type = "fungus")
 #' lit
 
-literature <- function(spec, spec_type = c("plant", "fungus"), process = TRUE)
+literature <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {
+  if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
+  if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
   expect_match(spec_type, ("fungus|plant"))
-  if(length(grep("\\sx\\s", spec)) > 0){ stop(" no hybrids allowed ") }
+  if(length(grep("\\sx\\s", x)) > 0){ stop(" no hybrids allowed ") }
   if(length(spec_type) == 2) stop(" 'spec_type' not specified. Please choose one of 'plant', 'fungus'")
-  ifelse(length(grep(" ", spec)) > 0,tax <- strsplit(spec, " "), tax <- strsplit(spec, "_"))
+  ifelse(length(grep(" ", x)) > 0,tax <- strsplit(x, " "), tax <- strsplit(x, "_"))
   
   ## I. PARSE DATA    ##
   ######################

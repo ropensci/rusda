@@ -5,7 +5,7 @@
 \alias{getHF}
 \alias{getMETA}
 \alias{getSYNS}
-
+\alias{ncbiSpecies}
 
 \title{Internal rusda Functions}
 \description{Internal \pkg{rusda} functions.}

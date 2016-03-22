@@ -47,21 +47,14 @@ If genera names are supplied, then species are derived from the NCBI taxonomy.
 }
 \examples{
 ## Example for species name(s) as input
-spec <- c("Fagus sylvatica")
-pathogens <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
-spec_type="plant", process=TRUE)
-spec <- c("Rosellinia ligniaria")
-hosts <- associations(spec, database="both", clean=TRUE, syn_include=TRUE,
-spec_type="fungus", process=TRUE)
+x <- "Fagus sylvatica"
+pathogens <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
+spec_type = "plant", process = TRUE)
+x <- "Rosellinia ligniaria"
+hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
+spec_type = "fungus", process = TRUE)
 is.element("Rosellinia ligniaria", pathogens$association[[1]])
 is.element("Fagus sylvatica", hosts$association[[1]])
-
-## Example for genus/genera name(s) as input
-gen <- c("Zehneria")
-# or
-gen <- c("Zehneria", "Momordica")
-hosts <- associations(gen, database="both", clean=TRUE, syn_include=TRUE,
-spec_type="plant", process=TRUE)
 }
 \author{
 Franz-Sebastian Krah

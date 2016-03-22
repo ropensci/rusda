@@ -4,12 +4,12 @@
 \alias{meta_smml}
 \title{Downloads and evaluate species presence in SMML DBs}
 \usage{
-meta_smml(spec, spec_type = c("plant", "fungus"), process = TRUE)
+meta_smml(x, spec_type = c("plant", "fungus"), process = TRUE)
 }
 \arguments{
-\item{spec}{a vector of class \code{character} containing fungal or plant species names}
+\item{x}{a vector of class \code{character} containing fungal or plant species or genus names}
 
-\item{spec_type}{a character string specifying the type of \code{spec}.
+\item{spec_type}{a character string specifying the type of \code{x}.
 Can be either \code{"plant"} or \code{"fungus"}}
 
 \item{process}{logical, if \code{TRUE} downloading and extraction process is displayed}
@@ -23,12 +23,12 @@ Searches, downloads and evaluates presence/absence of data in the SMML databases
 \details{
 Use this function before deriving data from one of the databases in order to prune your
 input species vector. With pruned species vectors the functions will run faster. This is important
-if \code{spec} is some hundred species long.
+if \code{x} is some hundred species long.
 }
 \examples{
-fungus.meta <- meta_smml(spec="Picea abies", process=TRUE, spec_type="plant")
+fungus.meta <- meta_smml(x = "Picea abies", process = TRUE, spec_type = "plant")
 fungus.meta
-hosts.meta <- meta_smml(spec="Antrodiella citrinella", process=TRUE, spec_type="fungus")
+hosts.meta <- meta_smml(x = "Antrodiella citrinella", process = TRUE, spec_type = "fungus")
 hosts.meta
 }
 \author{
