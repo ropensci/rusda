@@ -15,10 +15,12 @@
 #' @author Franz-Sebastian Krah
 #' 
 #' @examples
+#' \dontrun{
 #' fungus.meta <- meta_smml(x = "Picea abies", process = TRUE, spec_type = "plant")
 #' fungus.meta
 #' hosts.meta <- meta_smml(x = "Antrodiella citrinella", process = TRUE, spec_type = "fungus")
 #' hosts.meta
+#' }
 
 meta_smml <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {

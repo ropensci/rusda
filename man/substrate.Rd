@@ -4,10 +4,10 @@
 \alias{substrate}
 \title{Downloads substrate data from SMML Nomenclature DB}
 \usage{
-substrate(spec, process = TRUE)
+substrate(x, process = TRUE)
 }
 \arguments{
-\item{spec}{a vector of class \code{character} containing fungal or plant species names}
+\item{x}{a vector of class \code{character} containing fungal or plant species names}
 
 \item{process}{logical, if \code{TRUE} downloading and extraction process is displayed}
 }
@@ -22,10 +22,11 @@ Don't be disappointed. Not much data there.
 But depends on the study group, so give it try.
 }
 \examples{
-polyporus <- c("Polyporus_rhizophilus", "Polyporus_squamosus",
- "Polyporus_squamulosus", "Polyporus_varius")
-subs.poly <- substrate(polyporus, process=TRUE)
+\dontrun{
+x <- c("Polyporus_rhizophilus", "Polyporus_squamosus")
+subs.poly <- substrate(x, process=TRUE)
 subs.poly
+}
 }
 \author{
 Franz-Sebastian Krah

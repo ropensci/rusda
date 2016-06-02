@@ -23,9 +23,11 @@ a vector of mode \code{list} with literature entries for \code{x}
 Searches and downloads literature entries from the SMML Literature database
 }
 \examples{
+\dontrun{
 x <- "Polyporus badius"
 lit <- literature(x, process = TRUE, spec_type = "fungus")
 lit
+}
 }
 \author{
 Franz-Sebastian Krah

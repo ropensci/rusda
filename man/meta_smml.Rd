@@ -26,10 +26,12 @@ input species vector. With pruned species vectors the functions will run faster.
 if \code{x} is some hundred species long.
 }
 \examples{
+\dontrun{
 fungus.meta <- meta_smml(x = "Picea abies", process = TRUE, spec_type = "plant")
 fungus.meta
 hosts.meta <- meta_smml(x = "Antrodiella citrinella", process = TRUE, spec_type = "fungus")
 hosts.meta
+}
 }
 \author{
 Franz-Sebastian Krah

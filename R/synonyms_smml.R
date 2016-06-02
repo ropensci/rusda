@@ -12,12 +12,14 @@
 #' @author Franz-Sebastian Krah
 #' 
 #' @examples
+#' \dontrun{
 #' x <- "Solanum tuberosum"
 #' synonyms_usda(x, spec_type = "plant", process = TRUE, clean = TRUE)
 #' x <- c("Phytophthora infestans", "Polyporus badius")
 #' synonyms_usda(x, spec_type = "fungus", process = TRUE, clean = TRUE)
+#' }
 
-synonyms_usda <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
+synonyms_smml <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
 {
   if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
   if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")

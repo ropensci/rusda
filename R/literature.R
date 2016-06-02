@@ -13,9 +13,11 @@
 #' @author Franz-Sebastian Krah
 #' 
 #' @examples
+#' \dontrun{
 #' x <- "Polyporus badius"
 #' lit <- literature(x, process = TRUE, spec_type = "fungus")
 #' lit
+#' }
 
 literature <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {

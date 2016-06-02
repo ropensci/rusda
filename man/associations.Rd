@@ -46,6 +46,7 @@ Cleanded data displayes Linnean names only and species names with either "subsp.
 If genera names are supplied, then species are derived from the NCBI taxonomy.
 }
 \examples{
+\dontrun{
 ## Example for species name(s) as input
 x <- "Fagus sylvatica"
 pathogens <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
@@ -55,6 +56,14 @@ hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
 spec_type = "fungus", process = TRUE)
 is.element("Rosellinia ligniaria", pathogens$association[[1]])
 is.element("Fagus sylvatica", hosts$association[[1]])
+
+## Example for genus/genera name(s) as input
+x <- "Zehneria"
+# or
+x <- c("Zehneria", "Momordica")
+hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,
+spec_type = "plant", process = TRUE)
+}
 }
 \author{
 Franz-Sebastian Krah
