@@ -4,6 +4,7 @@ rusda
 
 
 [![Build Status](https://api.travis-ci.org/ropensci/rusda.png)](https://travis-ci.org/ropensci/rusda)
+[![codecov.io](https://codecov.io/github/ropensci/rusda/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rusda?branch=master)
 
 ## Interface to USDA databases
 
