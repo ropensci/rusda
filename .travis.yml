@@ -1,5 +1,6 @@
 language: r
-sudo: required
+sudo: false
+cache: packages
 notifications:
   email:
     on_success: change
