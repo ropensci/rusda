@@ -1,6 +1,8 @@
-context("rusda::getMETA")
+context("getMETA")
 
-test_that("rusda::getMETA", {
-  tt <- rusda::getMETA()
-  
+test_that("getMETA", {
+  tt <- getMETA("fugus")  
+
+  expect_is(tt, "numeric")
+  expect_equal(length(tt), 4)  
 })
