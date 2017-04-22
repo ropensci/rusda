@@ -1,6 +1,6 @@
-context("rusda::clean_step")
+context("clean_step")
 
-test_that("rusda::clean_step", {
-  tt <- rusda::clean_step()
+test_that("clean_step", {
+  tt <- clean_step()
   
 })
