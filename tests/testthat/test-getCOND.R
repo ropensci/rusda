@@ -1,7 +1,7 @@
 context("getCOND")
 
 test_that("getCOND", {
-  tt <- getCOND("fugus")
+  tt <- getCOND("fungus")
  
   expect_is(tt, "list")
   expect_is(tt$sp, "integer")
