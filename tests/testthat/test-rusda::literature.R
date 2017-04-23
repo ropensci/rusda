@@ -1,6 +1,6 @@
-context("rusda::literature")
+context("literature")
 
-test_that("rusda::literature", {
-  tt <- rusda::literature()
+test_that("literature", {
+  tt <- literature()
   
 })
