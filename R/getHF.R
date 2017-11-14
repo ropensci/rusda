@@ -6,7 +6,7 @@ getHF <- function(x, process, spec_type = c("plant","fungus")){
   if(process == TRUE){ message(paste(as.character(x[1]), as.character(x[2])))}
   if(spec_type == "fungus")
   {
-    url <- paste("http://nt.ars-grin.gov/fungaldatabases/new_allViewGenBank.cfm?thisName=",
+    url <- paste("https://nt.ars-grin.gov/fungaldatabases/new_allViewGenBank.cfm?thisName=",
                  as.character(x[1]), "%20",
                  as.character(x[2]),
                  "&organismtype=Fungus&CFID=28606i&",
@@ -14,7 +14,7 @@ getHF <- function(x, process, spec_type = c("plant","fungus")){
   }
   if(spec_type == "plant")
   {
-    url <- paste("http://nt.ars-grin.gov/fungaldatabases/new_allViewGenBank.cfm?thisName=",
+    url <- paste("https://nt.ars-grin.gov/fungaldatabases/new_allViewGenBank.cfm?thisName=",
                  as.character(x[1]), "%20",
                  as.character(x[2]),
                  "&organismtype=Host&CFID=2980587&CFTOKEN=9092a7639c080a51-",
