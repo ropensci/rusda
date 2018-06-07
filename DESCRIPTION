@@ -8,5 +8,6 @@ Maintainer: Franz-Sebastian Krah <f.krah@mailbox.org>
 Imports: XML, httr (>= 0.6.1), plyr, foreach, stringr, testthat, taxize, RCurl
 Description: An interface to the web service methods provided by the United States Department of Agriculture (USDA). The Agricultural Research Service (ARS) provides a large set of databases. The current version of the package holds interfaces to the Systematic Mycology and Microbiology Laboratory (SMML), which consists of four databases: Fungus-Host Distributions, Specimens, Literature and the Nomenclature database. It provides functions for querying these databases. The main function is \code{associations}, which allows searching for fungus-host combinations. 
 License: GPL (>= 2)
-URL: http://www.usda.gov/wps/portal/usda/usdahome, http://nt.ars-grin.gov/fungaldatabases/index.cfm
+URL: http://www.usda.gov/wps/portal/usda/usdahome, http://nt.ars-grin.gov/fungaldatabases/index.cfm, https://github.com/ropensci/rusda
+BugReports: https://github.com/ropensci/rusda/issues
 Repository: rOpenSci, CRAN
