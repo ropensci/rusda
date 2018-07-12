@@ -11,7 +11,7 @@
 #' @param syn_include logical, if \code{TRUE} associations for synonyms are searched and added. For a
 #' complete synonyms list check \code{rusda::synonyms}
 #' @param process logical, if \code{TRUE} downloading and extraction process is displayed
-#' 
+#' @aliases db if x is higher than species level, all species for the higher taxon are retrived using the function taxize::downstream. Here one of ITIS (itis), Catalogue of Life (col), GBIF (gbif), or NCBI (ncbi) has to be selected. NCBI is default.
 #' 
 #' @details The Fungus-Hosts distributions database 'FH' comprises data compiled from Literature. In
 #' the uncleaned output all kinds of unspecified substrates are documented like "submerged wood".
@@ -27,6 +27,8 @@
 #' complete list of synonym data in the database. This is the list of synonyms that contain data for
 #' the input \code{x}. For a complete synonyms list check \code{rusda::synonyms} or (if needed) for fungi R package rmycobank.
 #' @return Associations is a vector of mode \code{list} of associations for \code{x}
+#' 
+#' @import XML, httr, foreach
 #' 
 #' @author Franz-Sebastian Krah
 #' 
@@ -51,7 +53,8 @@
 #' }
 
 associations <- function(x, database = c("FH", "SP", "both"), 
-  spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, process = TRUE)
+  spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 
+  process = TRUE, db = "ncbi")
 {
   # test internet conectivity
   if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
@@ -70,7 +73,8 @@ associations <- function(x, database = c("FH", "SP", "both"),
   {stop(paste(" check if you specified ONLY genus names or ONLY species names \n",
     "AFAICS you provided:  \n", sum(words==1), "  genus name(s)  \n", sum(words==2), "  species name(s) ", sep=""))}
   if(all(words == 1)){
-    x <- lapply(x, ncbiSpecies, clean = TRUE, sub = FALSE)
+    # x <- lapply(x, ncbiSpecies, clean = TRUE, sub = FALSE)
+    x <- ncbiSpecies(x, clean = TRUE, sub = FALSE, db = db)
     x <- unlist(x)
   }
   
@@ -101,7 +105,8 @@ associations <- function(x, database = c("FH", "SP", "both"),
   ## IV. EXTRACRING DATA  ##
   ##########################
   # FH DB #
-  if(process == TRUE & database == "FH" | database == "both") { message("... extracting Fungus-Hosts DB ...") }
+  if(process == TRUE & database == "FH" | database == "both") { 
+    message("... extracting Fungus-Hosts DB ...") }
   i <- NULL
   hosts_hf <- foreach(i = seq_along(taxa)) %do%  {
     if(length(co[[i]]$hfu) == 0 | length(co[[i]]$hf.st) == 0){ hf <- "nodata" }
@@ -187,19 +192,52 @@ associations <- function(x, database = c("FH", "SP", "both"),
       if(!length(grep("nodata",x)) == 2) { x }})
   }
   
-  ## VI. CLEAN    ##
-  ##################
+  
+  
+  
+  ## VI. EXTRACT DATA ANS CLEAN    ##
+  ###################################
   ## do not conduct clean step if wanted
+  res <- lapply(res, extrac_info, spec_type = spec_type)
+  
   if(clean == TRUE)
   {
-    if(process == TRUE) { message("... cleaning step ...")}
-    res <- lapply(res, clean_step, taxa = taxa, 
-      syns = syns, spec_type = spec_type, synonyms_incl = TRUE)
+    if(process == TRUE) { 
+      message("... cleaning step ...")
+    }
+    
+    ## apply clean_step for each sublist (rapply not working, don't know why currently)
+    for(j in 1:length(res)){
+      if(!(length(res[[j]])==1 & length(grep("nodata", res[[j]])) == 1)){
+        for(i in 1:length(res[[j]])){
+          res[[j]][[i]] <- clean_step(res[[j]][[i]], taxa = taxa,
+            syns = syns, spec_type = spec_type, synonyms_incl = FALSE, subspec = TRUE)
+        }
+      }
+    }
   }
-  res <- lapply(res, unique)
-  names(res) <- taxa
+  res <- res[-grep("nodata", res)]
+  
+  res_spec_country <- lapply(res, function(x) x[[1]])
+  res_spec_country <- data.frame(do.call(rbind, res_spec_country))
+  res_spec_country <- data.frame(species = gsub("\\.\\d*", "", rownames(res_spec_country)), res_spec_country, row.names = NULL)
+  
+  
+ 
+  res_study_ids <- data.frame(do.call(rbind, lapply(res, function(x) x[[2]])))
+  res_study_ids <- data.frame(species = gsub("\\.\\d*", "", rownames(res_study_ids)), res_study_ids, row.names = NULL)
+  
+  if(spec_type=="fungus"){
+    names(res_spec_country) <- c("fungus", "host", "country")
+    names(res_study_ids) <- c("fungus", "host", "study_id")
+  }
+  
+  if(spec_type=="plant"){
+    names(res_spec_country) <- c("host", "fungus", "country")
+    names(res_study_ids) <- c("host", "fungus", "study_id")
+  }
   
   # VII. RESULTS OBJECT 2  ##
   ###########################
-  return(list(synonyms = syns, associations = res))
+  return(list(synonyms = syns, associations = res_spec_country, study_ids = res_study_ids))
 }
