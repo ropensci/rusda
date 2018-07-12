@@ -18,7 +18,7 @@
 #' subs.poly <- substrate(x, process=TRUE)
 #' subs.poly
 #' }
-#' 
+#' @export
 
 substrate <- function(x, process = TRUE)
 {

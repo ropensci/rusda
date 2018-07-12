@@ -2,6 +2,7 @@
 ##      This code is part of the rusda package       ##
 ##     F.-S. Krah 2016 (last update: 2016-03-18)     ##
 
+
 # ncbiSpecies <- function(sciname, clean, sub){
 #   uid <- get_uid(sciname, check = TRUE)[[1]]
 #   url <- paste("http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=",uid, sep="")
@@ -24,8 +25,7 @@
 
 
 ncbiSpecies <- function(sciname, clean, sub, db = "ncbi"){
-  # uid <- get_uid(sciname, check = TRUE)[[1]]
-  require(taxize)
+
   sp <- downstream(sciname, downto = "species", db = db)
   sp <- sp[[1]]$childtaxa_name
 

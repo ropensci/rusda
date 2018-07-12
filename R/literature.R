@@ -18,6 +18,7 @@
 #' lit <- literature(x, process = TRUE, spec_type = "fungus")
 #' lit
 #' }
+#' @export
 
 literature <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {

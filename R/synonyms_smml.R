@@ -18,6 +18,7 @@
 #' x <- c("Phytophthora infestans", "Polyporus badius")
 #' synonyms_usda(x, spec_type = "fungus", process = TRUE, clean = TRUE)
 #' }
+#' @export
 
 synonyms_smml <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
 {

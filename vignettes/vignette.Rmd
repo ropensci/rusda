@@ -1,5 +1,14 @@
-rusda
-=======
+---
+title: "rusda"
+author: "Franz-Sebastian Krah"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
 ## Interface to USDA databases
 
 ## Description

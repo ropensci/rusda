@@ -2,7 +2,7 @@ Package: rusda
 Type: Package
 Title: Interface to USDA Databases
 Version: 1.0.8
-Date: 2016-03-18
+Date: 2018-07-12
 Author: Franz-Sebastian Krah
 Maintainer: Franz-Sebastian Krah <f.krah@mailbox.org>
 Imports: XML, httr (>= 0.6.1), plyr, foreach, stringr, testthat, taxize, RCurl
@@ -10,3 +10,7 @@ Description: An interface to the web service methods provided by the United Stat
 License: GPL (>= 2)
 URL: http://www.usda.gov/wps/portal/usda/usdahome, http://nt.ars-grin.gov/fungaldatabases/index.cfm
 Repository: rOpenSci, CRAN
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

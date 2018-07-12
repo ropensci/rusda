@@ -6,6 +6,7 @@
 #' @return an object of class \code{list} with studies
 #' 
 #' @author Franz-Sebastian Krah
+#' @export
 
 
 getStudy_single <- function(id = 42264){

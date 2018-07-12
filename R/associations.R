@@ -11,7 +11,7 @@
 #' @param syn_include logical, if \code{TRUE} associations for synonyms are searched and added. For a
 #' complete synonyms list check \code{rusda::synonyms}
 #' @param process logical, if \code{TRUE} downloading and extraction process is displayed
-#' @aliases db if x is higher than species level, all species for the higher taxon are retrived using the function taxize::downstream. Here one of ITIS (itis), Catalogue of Life (col), GBIF (gbif), or NCBI (ncbi) has to be selected. NCBI is default.
+#' @param db if x is higher than species level, all species for the higher taxon are retrived using the function taxize::downstream. Here one of ITIS (itis), Catalogue of Life (col), GBIF (gbif), or NCBI (ncbi) has to be selected. NCBI is default.
 #' 
 #' @details The Fungus-Hosts distributions database 'FH' comprises data compiled from Literature. In
 #' the uncleaned output all kinds of unspecified substrates are documented like "submerged wood".
@@ -28,7 +28,6 @@
 #' the input \code{x}. For a complete synonyms list check \code{rusda::synonyms} or (if needed) for fungi R package rmycobank.
 #' @return Associations is a vector of mode \code{list} of associations for \code{x}
 #' 
-#' @import XML, httr, foreach
 #' 
 #' @author Franz-Sebastian Krah
 #' 
@@ -51,6 +50,15 @@
 #' hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE, 
 #' spec_type = "plant", process = TRUE)
 #' }
+#' @import foreach
+#' @import RCurl
+#' @import httr
+#' @import XML
+#' @import stringr
+#' @import testthat
+#' @import taxize
+#' @import plyr
+#' @export
 
 associations <- function(x, database = c("FH", "SP", "both"), 
   spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 

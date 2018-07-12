@@ -21,6 +21,7 @@
 #' hosts.meta <- meta_smml(x = "Antrodiella citrinella", process = TRUE, spec_type = "fungus")
 #' hosts.meta
 #' }
+#' @export
 
 meta_smml <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {

@@ -2,6 +2,7 @@
 ##      This code is part of the rusda package        ##
 ##      F.-S. Krah 2015 (last update: 2015-07-11)     ##  
 
+
 getHF <- function(x, process, spec_type = c("plant","fungus")){
   if(process == TRUE){ message(paste(as.character(x[1]), as.character(x[2])))}
   if(spec_type == "fungus")
