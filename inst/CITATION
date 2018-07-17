@@ -2,14 +2,14 @@ citHeader("To cite package 'rusda' in publications use:")
 
 citEntry(entry = "Article",
 author = personList(as.person("Franz-Sebastian Krah"), as.person("Hanno Schaefer"),
-as.person("Christoph Heibl"), as.person("Claus Baessler"), as.person("John Soghigian"),
+as.person("Christoph Heibl"), as.person("Claus B{\"{a}}ssler"), as.person("John Soghigian"),
 as.person("David Hibbett")),
          title = "Evolutionary dynamics of host specialization in wood-decay fungi",
          year = 2018,
          journal = "BMC Evolutionary Biology",
          volume = "0",
          pages = "0-13",
-         textVersion = paste("Franz-Sebastian Krah, Hanno Schaeffer, Christoph Heibl, Claus Baessler, John Soghigian, David Hibbett (2018)", 
+         textVersion = paste("Franz-Sebastian Krah, Hanno Schaeffer, Christoph Heibl, Claus B{\"{a}}ssler, John Soghigian, David Hibbett (2018)", 
         "Evolutionary dynamics of host specialization in wood-decay fungi", 
         "BMC Evolutionary Biology, 00:0-13.")
          )
