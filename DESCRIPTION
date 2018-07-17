@@ -14,4 +14,6 @@ RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: http://www.usda.gov/wps/portal/usda/usdahome, http://nt.ars-grin.gov/fungaldatabases/index.cfm, https://github.com/ropensci/rusda
+BugReports: https://github.com/ropensci/rusda/issues
 Repository: rOpenSci, CRAN
