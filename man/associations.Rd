@@ -4,9 +4,9 @@
 \alias{associations}
 \title{Downloads associations for input species from SMML Fungus-Host DB}
 \usage{
-associations(x, database = c("FH", "SP", "both"), spec_type = c("plant",
-  "fungus"), clean = TRUE, syn_include = TRUE, process = TRUE,
-  db = "ncbi")
+associations(x, database = c("FH", "SP", "both"),
+  spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE,
+  process = TRUE, db = "ncbi")
 }
 \arguments{
 \item{x}{a vector of class \code{character} containing fungal or plant species names or a genus name (see Details)}

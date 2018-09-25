@@ -3,7 +3,7 @@
 ##     F.-S. Krah 2015 (last update: 2015-07-11)     ##
 
 
-extrac_info <- function(x, spec_type){
+extract_info <- function(x, spec_type){
   
   if(is.null(x)) { 
     res_clean <- "nodata" 

@@ -206,7 +206,7 @@ associations <- function(x, database = c("FH", "SP", "both"),
   ## VI. EXTRACT DATA ANS CLEAN    ##
   ###################################
   ## do not conduct clean step if wanted
-  res <- lapply(res, extrac_info, spec_type = spec_type)
+  res <- lapply(res, extract_info, spec_type = spec_type)
   
   if(clean == TRUE)
   {
@@ -224,13 +224,16 @@ associations <- function(x, database = c("FH", "SP", "both"),
       }
     }
   }
-  res <- res[-grep("nodata", res)]
+  
+  res <- lapply(res, function(x){
+  if(length(grep("nodata", x)) > 0 ){
+    x[-grep("nodata", x)]
+  }else{x} })  
+      
   
   res_spec_country <- lapply(res, function(x) x[[1]])
   res_spec_country <- data.frame(do.call(rbind, res_spec_country))
   res_spec_country <- data.frame(species = gsub("\\.\\d*", "", rownames(res_spec_country)), res_spec_country, row.names = NULL)
-  
-  
  
   res_study_ids <- data.frame(do.call(rbind, lapply(res, function(x) x[[2]])))
   res_study_ids <- data.frame(species = gsub("\\.\\d*", "", rownames(res_study_ids)), res_study_ids, row.names = NULL)
