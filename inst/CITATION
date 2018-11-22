@@ -7,9 +7,10 @@ as.person("David Hibbett")),
          title = "Evolutionary dynamics of host specialization in wood-decay fungi",
          year = 2018,
          journal = "BMC Evolutionary Biology",
-         volume = "0",
-         pages = "0-13",
+         volume = "18",
+         issue = "1",
+         pages = "119-132",
          textVersion = paste("Franz-Sebastian Krah, Hanno Schaeffer, Christoph Heibl, Claus B{\"{a}}ssler, John Soghigian, David Hibbett (2018)", 
         "Evolutionary dynamics of host specialization in wood-decay fungi", 
-        "BMC Evolutionary Biology, 00:0-13.")
+        "BMC Evolutionary Biology, 18(1):119-132.")
          )

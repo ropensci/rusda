@@ -60,6 +60,13 @@
 #' @import plyr
 #' @export
 
+x <- "Armillaria lutea"
+database = "both"
+spec_type <- "fungus"
+library(foreach)
+library(XML)
+library(httr)
+
 associations <- function(x, database = c("FH", "SP", "both"), 
   spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 
   process = TRUE, db = "ncbi")
@@ -103,6 +110,10 @@ associations <- function(x, database = c("FH", "SP", "both"),
   #########################
   taxa <- lapply(tax, function(x) { paste(as.character(x[1]), as.character(x[2])) })
   co <- lapply(p, getCOND)
+  
+  if(co == "nodat"){
+    return("No data found")
+  }
   
   ## III. SYNONYMS ##
   ###################
