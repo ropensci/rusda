@@ -60,12 +60,12 @@
 #' @import plyr
 #' @export
 
-x <- "Armillaria lutea"
-database = "both"
-spec_type <- "fungus"
-library(foreach)
-library(XML)
-library(httr)
+# x <- "Armillaria lutea"
+# database = "both"
+# spec_type <- "fungus"
+# library(foreach)
+# library(XML)
+# library(httr)
 
 associations <- function(x, database = c("FH", "SP", "both"), 
   spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 
@@ -74,7 +74,7 @@ associations <- function(x, database = c("FH", "SP", "both"),
   # test internet conectivity
   if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
   # if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm")))
-  if(!is.character(GET("https://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
+  if(!url.exists("https://nt.ars-grin.gov/fungaldatabases/index.cfm")) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
   # test if arguments are given
   expect_match(spec_type, ("fungus|plant"))
   expect_match(database, ("FH|SP|both"))

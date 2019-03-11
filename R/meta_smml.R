@@ -26,7 +26,7 @@
 meta_smml <- function(x, spec_type = c("plant", "fungus"), process = TRUE)
 {
   if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
-  if(!is.character(GET("https://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : https://nt.ars-grin.gov/fungaldatabases/index.cfm")
+  if(!url.exists("https://nt.ars-grin.gov/fungaldatabases/index.cfm")) stop(" Database is not available : https://nt.ars-grin.gov/fungaldatabases/index.cfm")
   expect_match(spec_type, ("fungus|plant"))
   if(length(grep("\\sx\\s", x)) > 0) stop(" no hybrids allowed as input ")
   
