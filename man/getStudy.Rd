@@ -4,13 +4,15 @@
 \alias{getStudy}
 \title{Downloads studies for input study IDs}
 \usage{
-getStudy(x, sep = "; ")
+getStudy(id, sep = "; ")
 }
 \arguments{
 \item{id}{a single study id or a vector of study ids}
+
+\item{sep}{seperator how to collapse output literature references}
 }
 \value{
-an object of class \code{list} with studies
+an object of class \code{data.frame} with studies
 }
 \description{
 Downloads studies for study IDs which are output of associations

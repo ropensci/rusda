@@ -60,7 +60,7 @@
 #' @import plyr
 #' @export
 
-# x <- "Armillaria lutea"
+# x <- "Claviceps purpurea"
 # database = "both"
 # spec_type <- "fungus"
 # library(foreach)
@@ -219,8 +219,7 @@ associations <- function(x, database = c("FH", "SP", "both"),
   ## do not conduct clean step if wanted
   res <- lapply(res, extract_info, spec_type = spec_type)
   
-  if(clean == TRUE)
-  {
+  if(clean == TRUE){
     if(process == TRUE) { 
       message("... cleaning step ...")
     }
@@ -228,10 +227,8 @@ associations <- function(x, database = c("FH", "SP", "both"),
     ## apply clean_step for each sublist (rapply not working, don't know why currently)
     for(j in 1:length(res)){
       if(!(length(res[[j]])==1 & length(grep("nodata", res[[j]])) == 1)){
-        for(i in 1:length(res[[j]])){
-          res[[j]][[i]] <- clean_step(res[[j]][[i]], taxa = taxa,
+          res[[j]] <- clean_step(res[[j]], taxa = taxa,
             syns = syns, spec_type = spec_type, synonyms_incl = FALSE, subspec = TRUE)
-        }
       }
     }
   }
@@ -242,24 +239,20 @@ associations <- function(x, database = c("FH", "SP", "both"),
   }else{x} })  
       
   
-  res_spec_country <- lapply(res, function(x) x[[1]])
-  res_spec_country <- data.frame(do.call(rbind, res_spec_country))
-  res_spec_country <- data.frame(species = gsub("\\.\\d*", "", rownames(res_spec_country)), res_spec_country, row.names = NULL)
- 
-  res_study_ids <- data.frame(do.call(rbind, lapply(res, function(x) x[[2]])))
-  res_study_ids <- data.frame(species = gsub("\\.\\d*", "", rownames(res_study_ids)), res_study_ids, row.names = NULL)
+  res <- data.frame(do.call(rbind, res))
+  res <- data.frame(input = rownames(res), res, row.names = NULL)
+  res$input <- str_replace(res$input, "\\.\\d+", "")
+  res$study_id <- as.character(res$study_id)
   
   if(spec_type=="fungus"){
-    names(res_spec_country) <- c("fungus", "host", "country")
-    names(res_study_ids) <- c("fungus", "host", "study_id")
+    names(res) <- c("fungus", "host", "country", "study_id")
   }
   
   if(spec_type=="plant"){
-    names(res_spec_country) <- c("host", "fungus", "country")
-    names(res_study_ids) <- c("host", "fungus", "study_id")
+    names(res) <- c("host", "fungus", "country", "study_id")
   }
   
   # VII. RESULTS OBJECT 2  ##
   ###########################
-  return(list(synonyms = syns, associations = res_spec_country, study_ids = res_study_ids))
+  return(list(synonyms = syns, associations = res))
 }

@@ -2,19 +2,12 @@
 ##     This code is part of the rusda package        ##
 ##     F.-S. Krah 2015 (last update: 2015-07-11)     ##
 
-
 extract_info <- function(x, spec_type){
   
   if(is.null(x)) { 
     res_clean <- "nodata" 
   }else{
-    # if(spec_type == "plant" & x[[1]] == "nodata" & length(x) == 1){
-    #   res_clean <- x
-    # }else{
-      
-      
-      country <- c("Afghanistan", "Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech","Denmark","Djibouti","Dominica","Dominican","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russian Federation","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe")
-      
+
       
       search_spec <- word(x[grep("\r\n\t\t\t\t", x)[1]], 1,2)
       search_spec <- gsub("\\W", " ", search_spec)
@@ -30,13 +23,15 @@ extract_info <- function(x, spec_type){
         paste(intToUtf8(194),"\\s*",sep=""),
         paste("=",intToUtf8(194),sep=""),"=", "Variant\\sspelling", 
         paste(intToUtf8(195),"\u0083\u0097",sep=""),":",
-        paste(intToUtf8(195),"\u0083",sep=""), "\u0097",
-        "BPI\\s[0-9]*", ",")
+        paste(intToUtf8(195),"\u0083",sep=""), "\u0097", ",")
+        # "BPI\\s[0-9]*", ",")
       del <- paste(regex, collapse = "|")
-      if(length(grep(del, x)) > 0) x <- gsub(del, "", x)
-      
-      if(length(grep("^\\s+|\\s+$",x)) > 0) x <- gsub("^\\s+|\\s+$", "", x)
-      if(length(grep("f. sp.", x)) > 0) x <- gsub("f. sp.", "f.sp.", x)
+      if(length(grep(del, x)) > 0)
+        x <- gsub(del, "", x)
+      if(length(grep("^\\s+|\\s+$",x)) > 0) 
+        x <- gsub("^\\s+|\\s+$", "", x)
+      if(length(grep("f. sp.", x)) > 0) 
+        x <- gsub("f. sp.", "f.sp.", x)
       
       # extract species name
       spec <- lapply(x, function(x){
@@ -46,26 +41,44 @@ extract_info <- function(x, spec_type){
         return(x)
       })
       spec <- unlist(spec)
+      # 
+      # # extract country
+      # country <- c("Afghanistan", "Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech","Denmark","Djibouti","Dominica","Dominican","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russian Federation","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe")
+      # state_found <- str_extract_all(x, paste(country, collapse = "|"))
+      # state_found <- lapply(state_found, data.frame)
+      # names(state_found) <- spec
+      # state_found2 <- data.frame(do.call(rbind, state_found))
+      # state_found <- data.frame(species = rep(spec, lapply(state_found, function(x) dim(x)[1])), state_found2, row.names = NULL)
+      # names(state_found) <- c("species", "country")
+      # 
+      # # extract study ID
+      # ids <- str_extract_all(x, "[0-9]*")
+      # ids <- lapply(ids, function(x) x[grep(".", x)])
+      # ids <- unlist(lapply(ids, paste, collapse = ","))
+      # ids <- unlist(ids)
+      # names(ids) <- spec
+      # ids <- data.frame(species = spec, study_id = ids, row.names = NULL)
+      # 
       
-      # extract country
-      state_found <- str_extract_all(x, paste(country, collapse = "|"))
-      state_found <- lapply(state_found, data.frame)
-      names(state_found) <- spec
-      state_found2 <- data.frame(do.call(rbind, state_found))
-      state_found <- data.frame(species = rep(spec, lapply(state_found, function(x) dim(x)[1])), state_found2, row.names = NULL)
-      names(state_found) <- c("species", "country")
       
+      ## new extract countries and study ID
+      countID <- str_extract_all(x, "[A-z]* -  [^[A-Z]]*|BPI [^[A-Z]]*")
+      names(countID) <- spec
       
-      # extract study ID
-      ids <- str_extract_all(x, "[0-9]*")
-      ids <- lapply(ids, function(x) x[grep(".", x)])
-      ids <- unlist(lapply(ids, paste, collapse = ","))
-      ids <- unlist(ids)
-      names(ids) <- spec
-      ids <- data.frame(species = spec, study_id = ids, row.names = NULL)
+      countID.df <- data.frame(country_ID = unlist(countID, use.names = TRUE))
+      countID <- data.frame(species = rep(names(countID), times = unlist(lapply(countID, length))),
+                 countID.df)
+      
+      countID$country_ID <- as.character(countID$country_ID)
+      
+      country_ID <- do.call(rbind, str_split(countID$country_ID, "-"))
+      country_ID <- trimws(country_ID)
+      country_ID <- data.frame(country_ID)
+      country_ID[] <- apply(country_ID, 2, as.character)
+      country_ID <- data.frame(species = as.character(countID$species), country = country_ID$X1, study_id = country_ID$X2)
       
       ## create data.frame
-      res_clean <- list(country = state_found, study_ids = ids)
+      res_clean <- country_ID
     }
   return(res_clean)
 }

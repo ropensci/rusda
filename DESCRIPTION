@@ -2,7 +2,7 @@ Package: rusda
 Type: Package
 Title: Interface to USDA Databases
 Version: 1.0.8
-Date: 2019-06-03
+Date: 2019-07-02
 Author: Franz-Sebastian Krah
 Maintainer: Franz-Sebastian Krah <f.krah@mailbox.org>
 Imports: XML, httr (>= 0.6.1), plyr, foreach, stringr, testthat, taxize, RCurl
