@@ -62,7 +62,8 @@ extract_info <- function(x, spec_type){
       
       
       ## new extract countries and study ID
-      countID <- str_extract_all(x, "[A-z]* -  [^[A-Z]]*|BPI [^[A-Z]]*")
+      # countID <- str_extract_all(x, "[A-z]* -  [^[A-Z]]*|BPI [^[A-Z]]*")
+      countID <- str_extract_all(x, "([A-Z]{1}[a-z]+)? [A-z]+ -  [^[A-Z]]*|BPI [^[A-Z]]*")
       names(countID) <- spec
       
       countID.df <- data.frame(country_ID = unlist(countID, use.names = TRUE))
