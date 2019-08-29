@@ -60,12 +60,13 @@
 #' @import plyr
 #' @export
 
-# x <- "Claviceps purpurea"
-# database = "both"
-# spec_type <- "fungus"
-# library(foreach)
-# library(XML)
-# library(httr)
+x <- "Alternaria brassicae"
+database = "both"
+spec_type <- "fungus"
+process = TRUE
+library(foreach)
+library(XML)
+library(httr)
 
 associations <- function(x, database = c("FH", "SP", "both"), 
   spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 

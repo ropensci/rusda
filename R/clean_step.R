@@ -63,7 +63,7 @@ extract_info <- function(x, spec_type){
       
       ## new extract countries and study ID
       # countID <- str_extract_all(x, "[A-z]* -  [^[A-Z]]*|BPI [^[A-Z]]*")
-      countID <- str_extract_all(x, "([A-Z]{1}[a-z]+)? [A-z]+ -  [^[A-Z]]*|BPI [^[A-Z]]*")
+      countID <- str_extract_all(x, "([A-Z]{1}[a-z]+,)?\\s?([A-Z]{1}[a-z]+)? [A-z]+ -  [^[A-Z]]*|BPI [^[A-Z]]*")
       names(countID) <- spec
       
       countID.df <- data.frame(country_ID = unlist(countID, use.names = TRUE))
@@ -78,9 +78,25 @@ extract_info <- function(x, spec_type){
       country_ID[] <- apply(country_ID, 2, as.character)
       country_ID <- data.frame(species = as.character(countID$species), country = country_ID$X1, study_id = country_ID$X2)
       
+      
+      
       ## create data.frame
       res_clean <- country_ID
-    }
+  }
+  
+  res_clean[] <- apply(res_clean, 2, as.character)
+  
+  if(length(grep("card", res_clean$country))>0)
+    res_clean$country <- gsub("card", "", res_clean$country)
+
+  if(length(grep("card", res_clean$study_id))>0)
+    res_clean$study_id <- gsub("card", NA, res_clean$study_id)
+    
+
+  res_clean_dupl <- res_clean[which(res_clean$species == res_clean$country), ]
+  res_clean_dupl[, 1:2] <- do.call(rbind, strsplit(res_clean_dupl$species, " "))
+  res_clean[which(res_clean$species == res_clean$country), ] <- res_clean_dupl
+  
   return(res_clean)
 }
 
