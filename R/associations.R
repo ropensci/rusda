@@ -60,13 +60,13 @@
 #' @import plyr
 #' @export
 
-x <- "Alternaria brassicae"
-database = "both"
-spec_type <- "fungus"
-process = TRUE
-library(foreach)
-library(XML)
-library(httr)
+# x = "Alyssum argenteum"
+# database = "both"
+# spec_type <- "plant"
+# process = TRUE
+# library(foreach)
+# library(XML)
+# library(httr)
 
 associations <- function(x, database = c("FH", "SP", "both"), 
   spec_type = c("plant", "fungus"), clean = TRUE, syn_include = TRUE, 
@@ -112,7 +112,7 @@ associations <- function(x, database = c("FH", "SP", "both"),
   taxa <- lapply(tax, function(x) { paste(as.character(x[1]), as.character(x[2])) })
   co <- lapply(p, getCOND)
   
-  if(co == "nodat"){
+  if(any(co == "nodat")){
     return("No data found")
   }
   

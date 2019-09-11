@@ -7,9 +7,10 @@ getCOND <- function(x)
   dbs <- grep("This report contains data from the following databases:", x)
   hf.st <- grep("The Fungus-Host Distributions database has", x)
   spe.st <- grep("The Specimens database has", x)
-  nodat <- grep("There are no records for", x)
+  nodat <- grep("These is no information in the U.S. National Fungus Collections databases for", x)
   if(length(nodat)>0){
     return("nodat")
+    break
   }else{
   dbs <- x[dbs]
   sp <- grep("Specimens", dbs)
