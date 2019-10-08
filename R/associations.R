@@ -60,9 +60,9 @@
 #' @import plyr
 #' @export
 
-# x = "Alyssum argenteum"
+x = "Protomyces inouyei"
 database = "FH"
-spec_type <- "plant"
+spec_type <- "fungus"
 process = TRUE
 library(foreach)
 library(XML)
@@ -110,11 +110,12 @@ associations <- function(x, database = c("FH", "SP", "both"),
   ## II. DATA CONDITIONS ##
   #########################
   
-  if(any(unlist(lapply(p, is.null))))
+  if(any(unlist(lapply(p, is.null)))){
     del_no_entry <- which(lapply(p, is.null) == TRUE)
     p <- p[-del_no_entry]
     tax = tax[-del_no_entry]
     warning("Species with index ", del_no_entry, " was removed because no data available.")
+  }
   
   taxa <- lapply(tax, function(x) { paste(as.character(x[1]), as.character(x[2])) })
   co <- lapply(p, getCOND)
