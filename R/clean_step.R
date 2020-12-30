@@ -139,4 +139,3 @@ clean_step <- function(x, syns, taxa, spec_type, synonyms_incl, subspec = TRUE){
   
   return(x)
 }
-
