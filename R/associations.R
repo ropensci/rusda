@@ -1,6 +1,6 @@
 ##                       associations                           ##
 ##      This code is part of the rusda package                  ##
-##     FS-Krah; A Schertler (last update: 2020-01-04 by AS)     ##
+##     FS-Krah (last update: 2020-01-04 by AS)                  ##
 
 #' Downloads associations for input species from SMML Fungus-Host DB
 #' 

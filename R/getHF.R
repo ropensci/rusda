@@ -1,9 +1,6 @@
 ##                        getHF                       ##
 ##      This code is part of the rusda package        ##
-##      F.-S. Krah 2015 (last update: 2015-07-11)     ##  
-
-# last update: A. Schertler (2020-12-06) 
-# argument spec_type = c("fungus", "plant") removed
+##      F.-S. Krah 2015 (last update: 2020-12-06 by AS)     ##  
 
 getHF <- function(x, process){
   if(process == TRUE){ message(paste(x, collapse= " "))}
