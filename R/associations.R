@@ -1,6 +1,6 @@
 ##                       associations                           ##
 ##      This code is part of the rusda package                  ##
-##     FS-Krah; A Schertler (last update: 2020-11-23 by AS)     ##
+##     FS-Krah; A Schertler (last update: 2020-01-04 by AS)     ##
 
 #' Downloads associations for input species from SMML Fungus-Host DB
 #' 
@@ -12,12 +12,12 @@
 #' @param syn_include logical, if \code{TRUE} associations for synonyms are searched and added. For a
 #' complete synonyms list check \code{rusda::synonyms}
 #' @param process logical, if \code{TRUE} downloading and extraction process is displayed
-#' @param db if x is higher than species level, all species for the higher taxon are retrived using the function taxize::downstream. 
+#' @param db if x is above species level, all species for the higher taxon are retrived using the function taxize::downstream. 
 #' Here one of ITIS (itis), Catalogue of Life (col), GBIF (gbif), or NCBI (ncbi) has to be selected. NCBI is default.
 #' 
 #' @details The Fungus-Hosts distributions database 'FH' comprises data compiled from Literature. In
 #' the uncleaned output all kinds of unspecified substrates are documented like "submerged wood".
-#' Cleanded data displayes Linnean names only and species names with either "subsp.","f. sp." "f.",
+#' Cleaned data displayes Linnean names only and species names with either "subsp.","f. sp." "f.",
 #' "var.", "cv.". 
 #' The Specimens database comprises entries from field collections. The output contains the Specimen ID as "study id". 
 #' Some field collection entries cointain additional information (e.g. on collector etc.); this is stored in the column "notes".
@@ -26,24 +26,22 @@
 #' If genera names are supplied, then species are derived from the NCBI taxonomy.
 #' 
 #' 
-#' @return an object of class \code{dataframe}. 
-#' @return Associations is a dataframe of associations for \code{x}
+#' @return an object of class \code{list}. 
+#' @return First is associations, a dataframe, second is no_data, a character vector with names from \code{x} for which no records where found.
 #' 
-#' @author Franz-Sebastian Krah
+#' @author Franz-Sebastian Krah, Anna Schertler
 #' 
 #' @examples
 #' \dontrun{
 #' ## Example for species name(s) as input
 #' x <- "Rosellinia ligniaria"
-#' hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE,  process = TRUE)
-#' is.element("Rosellinia ligniaria", pathogens$association[[1]])
-#' is.element("Fagus sylvatica", hosts$association[[1]])
-#' 
+#' hosts <- associations(x, database = "both", syn_include = TRUE,  process = TRUE)
+#' is.element("Fagus sylvatica", hosts$association[["host_substrate"]])
+#'
 #' ## Example for genus/genera name(s) as input
 #' x <- c("Cantharellus", "Phellodon")
-#' hosts <- associations(x, database = "both", clean = TRUE, syn_include = TRUE, process = TRUE)
+#' hosts <- associations(x, database = "both", syn_include = TRUE, process = TRUE)
 #' }
-#' @import foreach
 #' @import RCurl
 #' @import httr
 #' @import XML
@@ -51,11 +49,11 @@
 #' @import testthat
 #' @import taxize
 #' @import dplyr
+#' @import foreach
 #' @export
+#' 
 
 
-a <- associations("Alternaria alternata", database = "both", syn_include = TRUE)
-x <- c("Amanita muscaria", "Ustilago maydis", "Lorem ipsum", "Fusarium oxysporum f.sp. cubense", "Entoloma hochstetteri", "Fusarium oxysporum f. sp. cubense")
 associations <- function(x, 
                          database = c("FH", "SP", "both"),
                          process = TRUE, 
@@ -63,9 +61,9 @@ associations <- function(x,
                          db = "ncbi")
 {
   require(RCurl); require(httr); require(XML);require(stringr); require(testthat);require(taxize);require(dplyr);require(foreach)
-  require(pbapply)
+  
   # test internet conectivity
-  if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
+  if(!url.exists("r-project.org") == TRUE) {stop( "Not connected to the internet. Please create a stable connection and try again." )}
   
   # test if arguments are given
   expect_match(database, ("FH|SP|both"))
@@ -103,41 +101,45 @@ associations <- function(x,
   # check if data is available in the FH and in the Specimen Database
   co <- lapply(p, getCOND)
   
-  # check for any taxa with no data (then the co output would be a string "no data" instead of a list)
+  # check for any taxa with 1) no data at all (then the co output is a string "no data" instead of a sublist) or 2) no records in HF and Specimens database
+  tax_nodata <- ""
   if(any(unlist(lapply(co, is.list)) == FALSE) | 
      any(unlist(lapply(co, function(x) {if(is.list(x)){(x$sp == FALSE & x$hfu == FALSE)}}))))    {
     
-      # check for which taxa no entries are available
+      # find positions
           del_no_entry <- which(lapply(co, function(x) {
               if(is.list(x))
                 {(x$sp == FALSE & x$hfu == FALSE)}
               else{x == "nodat"}}) == TRUE)
       
       # remove those
-          p <- p[-del_no_entry] 
+          p   <- p[-del_no_entry] 
+          tax_nodata <- unlist(lapply(tax[del_no_entry], function(x) { paste(x, collapse = " ") })) 
           tax <- tax[-del_no_entry]
+          co  <- co[-del_no_entry]
+          
+          
+          if(length(p) == 0) {stop("all species were removed because no data available")}
+          
           warning("Species with index ",   
                   gsub(",$","",paste0(del_no_entry, ",", collapse = "")), " removed because no data available.")
+
+          rm(del_no_entry)
   }
-  
-  if(exists("del_no_entry")){ co <- co[-del_no_entry]
-                              rm(del_no_entry)}
-  
-  if(length(p) == 0) {stop("all species were removed because no data available")}
   
   taxa <- lapply(tax, function(x) { paste(x, collapse = " ") }) 
 
   ## III. EXTRACTING DATA  #####
   ##############################.
   
-  # extract the current scientific name ####
-  # this only works for names with a nomenclature db entry!
+  # __ extract the current scientific name used by usda (uppermost bold name) ####
+  # note: his only works for names with a nomenclature db entry
   current_names <- unlist(lapply(p, function(x) { if(length(gsub("\\([^\\(]*$", "", x[grep("^Nomenclature data for", x)+1])) == 0)
   {"no nomenclature record" } 
     else {
       trimws(gsub("\\([^\\(]*$", "", x[grep("^Nomenclature data for", x)+1]))}}))
 
-  # ____A) FH DB ####
+  # __ FH DB ####
   if(process == TRUE & database == "FH" | database == "both") { 
     message("... extracting Fungus-Hosts DB ...") }
 
@@ -237,11 +239,13 @@ associations <- function(x,
     df_fh <- do.call(rbind.data.frame, countries) 
     df_fh$scientific_name <- ifelse(length(which(unlist(taxa)  %in% tax_name)) >1,
                                     NA, current_names[which(unlist(taxa)  %in% tax_name)])
-  df_fh <- df_fh[,c("input", "scientific_name", "synonym_used","host_substrate", "country", "study_id", "notes")]
+    df_fh$db <- "FH"
+    df_fh$type <- ""
+  df_fh <- df_fh[,c("input", "scientific_name", "synonym_used","host_substrate", "country", "db", "study_id", "type", "notes")]
   return(df_fh)
   })
 
-  # ____B) Specimens DB  #####
+  # __B) Specimens DB  #####
   if(process == TRUE & database == "SP" | database == "both") { message("... extracting Specimens DB ...")} 
  
   # extract the raw SP-DB strings and separate, so each database row (host + localities) forms one string
@@ -261,13 +265,11 @@ associations <- function(x,
     
     x_sp <- hosts_sp[[specim]]
     
-    # use the BPI ID to access th eassociated page 
+    # use the BPI ID to access the associated pages
     # extract country and locality data and additional notes
     x_sp <- gsub("^.*?\\s-\\s", "", x_sp[grepl("[0-9]+|card,",x_sp)]) # remove host name  and synonym
     bpi_id <- unlist(strsplit(x_sp, ", ")) # get all BPI IDs
     
-
-    # download and add the information for the single specimens
     df_sp <- lapply(bpi_id, function(x) {
       # parse data
       x1 <- gsub("\\s", "%20", x)
@@ -281,7 +283,7 @@ associations <- function(x,
       # check for type specimen information 
       if(grepl("TYPE", cont[1])) {
         type <- trimws(gsub("^.*?[0-9]\\s", "", cont[1]))
-      }
+      } else{type <- ""}
      
       # extract used name
       fungus_name_used <- gsub(x , "", cont[1]) # remove bpi id
@@ -314,7 +316,9 @@ associations <- function(x,
         synonym_used = fungus_name_used,
         host_substrate = species, 
         country = country, 
-        study_id = x, 
+        db = "Specimen",
+        study_id = x,
+        type = type,
         notes= notes, 
         stringsAsFactors = F)
       return(outdf)
@@ -322,7 +326,7 @@ associations <- function(x,
     })
     df_sp <- do.call(rbind.data.frame, df_sp) 
     df_sp <- df_sp[which(!duplicated(df_sp)),]
-    df_sp <- df_sp[,c("input", "scientific_name", "synonym_used","host_substrate", "country", "study_id", "notes")]
+    df_sp <- df_sp[,c("input", "scientific_name", "synonym_used","host_substrate", "country", "db", "study_id", "type", "notes")]
    
     return(df_sp)
   })
@@ -349,7 +353,7 @@ associations <- function(x,
   #########################.
   rownames(res) <- 1:nrow(res)
   res <- data.frame(apply(res, MARGIN = 2, function (x) 
-    {x <- trimws(gsub("\\(\\(.*?\\)\\)|\\.([0-9])+$|\\s+$|^\\s+|:|;|,$|card","",x))
+    {x <- trimws(gsub("\\(\\(.*?\\)\\)|\\.([0-9])+$|\\s+$|^\\s+|:|;|,$|card|0000 000 00","",x))
     
     # some words miss the whitespace in between (typos in the database) - insert
      x <- gsub("(?<=[a-z])(?=[A-Z])" ," ", x , perl = T)
@@ -375,13 +379,14 @@ associations <- function(x,
   }
   
   #### collapse records that were downloaded via different synonyms (put all input names in one cell, separated by |)
-  res <- res %>%
-    dplyr::group_by(scientific_name, scientific_name_authorship, synonym_used, host_substrate, country, study_id, notes) %>% 
-     dplyr::summarise(input_names = paste(input, collapse = " | "))
-  res <- res[,c("input_names", "scientific_name", "scientific_name_authorship", "synonym_used","host_substrate", "country", "study_id", "notes")]
+  suppressMessages(res <- res %>%
+    dplyr::group_by(scientific_name, scientific_name_authorship, synonym_used, host_substrate, country, db, study_id, type, notes) %>% 
+     dplyr::summarise(input_names = paste(input, collapse = " | ")))
+  res <- res[,c("input_names", "scientific_name", "scientific_name_authorship", "synonym_used","host_substrate", "country", "db", "study_id", "type", "notes")]
   
  # VI. RESULTS OBJECT OUT  #####
   ################################.
-  return(res)
+  return(list(association = as.data.frame(res),
+                 no_data = tax_nodata))
 }
 
