@@ -23,7 +23,7 @@
 synonyms_smml <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, process = TRUE)
 {
   if(!url.exists("r-project.org") == TRUE) stop( "Not connected to the internet. Please create a stable connection and try again." )
-  if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
+  #if(!is.character(getURL("http://nt.ars-grin.gov/fungaldatabases/index.cfm"))) stop(" Database is not available : http://nt.ars-grin.gov/fungaldatabases/index.cfm")
   expect_match(spec_type, ("fungus|plant"))
   if(length(grep("\\sx\\s", x)) > 0) { stop(" no hybrids allowed as input") }
   
@@ -46,7 +46,7 @@ synonyms_smml <- function(x, spec_type = c("plant", "fungus"), clean = TRUE, pro
   ## I. PARSE DATA    ##
   ######################
   if(process == TRUE) { message("... retrieving data ... for:") }
-  p <- foreach(i = seq_along(tax)) %do% getHF(tax[[i]], process = process, spec_type = spec_type)
+  p <- foreach(i = seq_along(tax)) %do% getHF(tax[[i]], process = process)
   taxa <- lapply(tax, function(x) { paste(as.character(x[1]), as.character(x[2])) })
   
   ## III. SYNONYMS ##
